@@ -1,4 +1,38 @@
 \section{Terms and Definitions}
 \label{sec:terms_and_definitions}
 
+  In this section, we will give a brief overview of the terms and definitions
+  that we will use throughout this report. These definitions should not be
+  considered complete or even absolutely accurate, as they are a personal
+  choice of words with the goal of giving the reader an impression of what
+  we are talking about.
 
+  \subsection{Neural networks}
+  \label{sub:neural_networks}
+  
+    A \textit{Neuron} is a programmatic structure (or function) that is based
+    on neurons inside the brain. In its most basic form, it takes a vector of
+    input variables, calculates a weighted sum and applies an activation function
+    (typically a sigmoid function like \textit{tanh}).
+
+    A \textit{neural network} is a collection of neurons which are typically
+    arranged in layers, where the input of a layer is the output of the
+    preceeding one. The output of the last layer is called the output of
+    the network.
+
+  \subsection{Recurrent Neural Networks}
+  \label{sub:recurrent_neural_networks}
+  
+    A \textit{recurrent neural network} is a neural network where the
+    output of one or more layers is fed back as input to the network
+    or a selection of units. This allows the network to make decisions
+    based on previous results / events.
+
+
+  \subsection{Keras}
+  \label{sub:keras}
+  
+    Keras is a Python module that contains functions and classes to easily create
+    and manipulate neural networks. It contains not only basic neurons, but
+    also more involved units like LSTM-Cells or Embedding-Layers (plus
+    many more).
