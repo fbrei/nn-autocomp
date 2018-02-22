@@ -1,4 +1,59 @@
-\section{Data preparation}
-\label{sec:data_preparation}
+\section{Data preparation} \label{sec:data_preparation}
 
+  Data preparation is one of the most important aspects in machine
+  learning.  While it is nice to have huge amounts of data at your
+  disposal, there is also a high chance that it contains a lot of noise.
 
+  \subsection{Dealing with comments} \label{sub:dealing_with_comments}
+
+    One kind of noise is introduced by comments within the source
+    code. Although these may be informative to the reader, they will
+    probably just distract our algorithm from learning the things that
+    it should.
+
+    We addressed the issue about the comments with a simple substitution
+    using regular expressions, after reading every single source file
+    into a single string variable called \verb+blob+. The relevant part
+    of our source code can be seen in (\ref{fig:comments}).
+
+    \begin{figure}[htpb]
+      \centering \begin{lstlisting}[language=Python]
+        import re
+
+        comments = re.compile(r'#.*')
+        cleaned_text = comments.sub('', blob)
+      \end{lstlisting} \caption{Removing all comments in Python source
+      code} \label{fig:comments}
+    \end{figure}
+
+    This may seem specific to Python, but it is easy to add another line
+    that deletes every substring starting with something like \verb+//+
+    or that is wrapped between \verb+/*...*/+, covering a great deal of
+    programming languages.
+
+  \subsection{Punctuation and Operators}
+  \label{sub:punctuation_and_operators}
+
+    Another potential source of trouble is the fact that it is
+    absolutely common to append something like a dot or comma directly
+    to a name without adding whitespace in between. While perfectly
+    clear to humans, a machine does not recognize \verb+a,+ and
+    \verb+a+\textvisiblespace\verb+,+ as the same thing.
+
+    We can easily remedy this by adding said whitespace, again using
+    regular expressions.  Example (\ref{fig:puncts}) deals with
+    dots and commas, but we have also used this on the characters
+    \verb+(,),[,],{,}+ and \verb+=+.
+
+    \begin{figure}[htpb]
+      \centering \begin{lstlisting}[language=Python]
+        commas = re.compile(r',')
+        cleaned_text = commas.sub(' , ', cleaned_text)
+
+        dots = re.compile(r'\.') 
+        cleaned_text = dots.sub(' . ', cleaned_text)
+      \end{lstlisting} \caption{Seperating punctuation} \label{fig:puncts}
+    \end{figure}
+
+    This obviously introduces a new problem as operators like \verb+==+
+    or \verb++=* are torn apart.
