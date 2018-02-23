@@ -34,19 +34,45 @@
   \subsection{Dual Input Network}
   \label{sub:dual_input_network}
     
-%  ['if', '<ID>'] -> <ID>
-%  ['if', '<ID>'] -> (
-%  ['if', '<ID>'] -> .
-%  ['if', '<ID>'] -> [
-%  ['def', '<ID>'] -> (
-%  ['def', '<ID>'] -> <ID>
-%  ['def', '<ID>'] -> .
-%  ['def', '<ID>'] -> [
-%  ['main', '('] -> <ID>
-%  ['main', '('] -> self
-%  ['main', '('] -> sys
-%  ['main', '('] -> argv
-%  ['(', '<ID>'] -> )
-%  ['(', '<ID>'] -> ,
-%  ['(', '<ID>'] -> <ID>
-%  ['(', '<ID>'] -> ( 
+    Learning to predict the correct next word based on a pair of input words is a bit more trickier
+    because there are much more possible combinations of inputs that the network has to learn.
+    On top of that, there are much fewer samples per possible input than with single tokens.
+
+    Using the same architecture and parameters as before, we trained another network to
+    make predictions based on tuples. The validation loss stopped dropping during the fourth
+    epoch so we aborted training at that point.
+
+    Again we ran some common combinations of words through the network and recorded the top
+    five outputs as recorded below.
+
+    \begin{table}[htpb]
+      \centering
+      \label{tab:doubleres}
+      \begin{tabular}{l | l | l | l | l}
+        \textbf{Input} & \verb+if <ID>+ & \verb+def <ID>+ & \verb+main (+ & \verb+( <ID>+ \\ \hline  
+        \textbf{Prediction}  &  \verb+<EOL>+ &\verb+(+  & \verb+)+ & \verb+)+ \\
+          & \verb+==+ & \verb+<EOL>+ & \verb+<ID>+ & \verb+,+ \\
+          & \verb+.+ & \verb+.+ & \verb+self+ & \verb+.+ \\
+          & \verb+[+ & \verb+[+ & \verb+\*+ & \verb+(+ \\
+      \end{tabular}
+      \caption{Predictions made by the dual input network}
+    \end{table}
+
+    These results look again very promising; almost every suggestion makes sense immediately and we can
+    construct working lines of code for each of the suggestions.
+
+  \subsection{Consecutive Output}
+  \label{sub:consecutive_output}
+  
+    We took this even further and fed back the output of the dual input network together with the second input token
+    to create a new input pair. We repeated this process until we hit an \verb+<EOL>+ tag. The results are depicted below,
+    starting with a mere \verb+def <ID>+ string.
+
+\Tree [.{def $<$ID$>$}
+          [.( [.{$<$ID$>$} [.) [ {$<$EOL$>$} ]] [., [$<$ID$>$ ]]] 
+              [.) [.{$<$EOL$>$} ]]] 
+          [.{$<$EOL$>$} ]]
+
+    As one can see, the suggestions already make some sense (except for the immediate \verb+<EOL>+). Unfortunately,
+    once the network starts suggestions multiple comma separated identifiers, it is trapped in an endless loop due
+    to the small lookbehind window.

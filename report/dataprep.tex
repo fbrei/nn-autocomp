@@ -129,17 +129,17 @@ reduced_words = [ w for w in all_words if c[w] >= min_count ] \end{lstlisting}
 
     Finally, the sequences of words can be turned into sequences of numbers, keeping all the ones that appear in
     our dictionary natively and replacing everything else with the special token \verb+<ID>+. Translating
-    these numbers back into words than gives us lines like (\ref{fig:goodsample})
+    these numbers back into words than gives us lines like (\ref{fig:goodsample}).
 
     \begin{figure}[htpb]
       \centering
       \begin{verbatim}
-    ['<ID>', 'def', '<ID>', '(', '<ID>', ')', ':', '<ID>'] \end{verbatim}
+      ['def', '<ID>', '(', '<ID>', ')', ':'] \end{verbatim}
       \caption{Sample line after translating the words into numbers}
       \label{fig:goodsample}
     \end{figure}
 
-    Apart from the \verb+<ID>+ tokens at the beginning and end, this is exactly what we are looking for. A scriptable text editor
+    This is exactly what we are looking for. A scriptable text editor
     can use this type of output to make smart suggestions and just ask the programmer to fill out the \verb+<ID>+ placholders.
 
     \subsection{Creating the training data}
