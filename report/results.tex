@@ -1,4 +1,26 @@
 \section{Results}
 \label{sec:results}
 
+  \subsection{Single Input Network}
+  \label{sub:single_input_network}
+  
+    Using the aforementioned parameter pair, we trained another network to make predictions based on
+    a single input token. The loss settled after three epochs so we decided to abort early.
 
+    We then ran a selection of input words through the network and sorted the output vector indices
+    based on their corresponding values. Then we selected the first five of them, meaning the five
+    best guesses the network would make. The results are depicted in (\ref{tab:singleres}).
+    
+    \begin{table}[htpb]
+      \centering
+      \label{tab:label}
+      \begin{tabular}{l | l | l | l | l}
+        \textbf{Input} & \verb+if+ & \verb+import+ & \verb+def+ & \verb+(+ \\ \hline  
+        \textbf{Prediction}  &  \verb+<ID>+ &\verb+<ID>+  & \verb+<ID>+ & \verb+<ID>+ \\
+          & \verb+not+ & \verb+sys+ & \verb+__init__+ & \verb+self+ \\
+          & \verb+self+ & \verb+os+ & \verb+__init__+ & \verb+self+ \\
+          & \verb+__name__+ & \verb+time+ & \verb+__init__+ & \verb+self+ \\
+          & \verb+len+ & \verb+random+ & \verb+__init__+ & \verb+self+ \\
+      \end{tabular}
+      \caption{Predictions made by the single input network}
+    \end{table}

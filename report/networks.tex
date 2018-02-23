@@ -13,7 +13,7 @@
 
     We then decided to go for a single recurrent layer of GRU cells to keep the number of parameters
     low. This gives us the opportunity to explore the parameter space a little bit to find a good network
-    regarding size and effectiveness.
+    regarding size and effectiveness. All GRU cells use the \verb+tanh+ activation function.
 
     The last layer consists of densely connected neurons using a softmax activation function, so we can access
     the index of the token that the network predicts using an \verb+argmax+ function. The size of this layer
@@ -21,6 +21,10 @@
 
   \subsection{Parameters}
   \label{sub:parameters}
+
+    Thanks to the low number of parameters we have the rare opportunity to sample from the parameter space and
+    find out how the network behaves. The two most influential parameters in our network are the size of the 
+    embedding and the number GRU cells.
   
   \begin{table}[htpb]
     \centering
@@ -33,5 +37,32 @@
       64 &\cellcolor[rgb]{0.75,0.75,0}  1.0206 &\cellcolor[rgb]{0.65,0.8,0}  1.01366 & \cellcolor[rgb]{0.55,0.9,0} 1.00847 & \cellcolor[rgb]{0.5,0.95,0} 1.00286 \\ \hline
       128 &\cellcolor[rgb]{0.7,0.8,0}  1.01684 &\cellcolor[rgb]{0.6,0.85,0}  1.01002 & \cellcolor[rgb]{0.55,0.95,0} 1.00372 & \cellcolor[rgb]{0.5,1,0} 1 \\ \hline
     \end{tabular}
-    \caption{Relative training losses for single word prediction}
+    \caption{Relative training losses for predictions based on single inputs}
+  \end{table}
+
+    We ran each combination of parameters once and waited five epochs for the loss to settle. We set aside
+    a fraction of ten percent of our data to calculate the validation loss, as this is far more
+    accurate than the training loss when assessing the quality of the network. To train the network
+    we used the adam optimizer and the loss is calculated using the categorical crossentropy function, which
+    is best practice in these types of machine learning.
+
+    As expected, a higher number in both dimension leads to a reduced validation loss. The best results
+    were achieved with relatively high numbers in both dimensions and we had hoped for the loss to
+    reach a minimum with lower numbers.
+
+    Eventually we settled with $(128,128)$ as our parameter pair and trained both networks with this combination.
+  
+  \begin{table}[htpb]
+    \centering
+    \label{tab:double}
+    \begin{tabular}{| c | c | c | c | c |}
+      \hline \textbf{Embedding Dimension}  & 16  & 32  & 64 & 128 \\ \hline
+      \textbf{GRU Cells} &  & & & \\
+16  &\cellcolor[rgb]{0.9,0.6,0} 1.12393 &\cellcolor[rgb]{0.85,0.65,0} 1.12226 & \cellcolor[rgb]{0.8,0.7,0} 1.07682 & \cellcolor[rgb]{0.75,0.7,0} 1.05991 \\ \hline
+32  &\cellcolor[rgb]{0.8,0.65,0} 1.08078 & \cellcolor[rgb]{0.7,0.75,0} 1.04828 & \cellcolor[rgb]{0.7,0.8,0} 1.03805 &  \cellcolor[rgb]{0.6,0.85,0}1.02983 \\ \hline
+64  & \cellcolor[rgb]{0.75,0.75,0} 1.04889 & \cellcolor[rgb]{0.65,0.85,0} 1.03574 & \cellcolor[rgb]{0.55,0.9,0} 1.01911 & \cellcolor[rgb]{0.5,0.95,0} 1.00842 \\ \hline
+      128 & \cellcolor[rgb]{0.65,0.8,0} 1.03613 & \cellcolor[rgb]{0.6,0.9,0} 1.02123 & \cellcolor[rgb]{0.55,0.95,0} 1.01179 & \cellcolor[rgb]{0.5,1.0,0} 1 \\ \hline
+
+    \end{tabular}
+    \caption{Relative training losses for predictions based on two input values}
   \end{table}
