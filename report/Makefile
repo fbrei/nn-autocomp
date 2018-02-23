@@ -3,6 +3,6 @@ all:
 	pdflatex report.tex;
 
 clean:
-	rm report.toc
-	rm report.aux
-	rm report.log
+	rm -f report.toc
+	rm -f report.aux
+	rm -f report.log
