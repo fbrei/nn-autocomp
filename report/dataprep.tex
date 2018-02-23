@@ -21,8 +21,8 @@
         import re
 
         comments = re.compile(r'#.*')
-        cleaned_text = comments.sub('', blob)
-      \end{lstlisting} \caption{Removing all comments in Python source
+        cleaned_text = comments.sub('', blob) \end{lstlisting} 
+        \caption{Removing all comments in Python source
       code} \label{fig:comments}
     \end{figure}
 
@@ -51,8 +51,9 @@
         cleaned_text = commas.sub(' , ', cleaned_text)
 
         dots = re.compile(r'\.') 
-        cleaned_text = dots.sub(' . ', cleaned_text)
-      \end{lstlisting} \caption{Seperating punctuation} \label{fig:puncts}
+        cleaned_text = dots.sub(' . ', cleaned_text) \end{lstlisting} 
+        \caption{Seperating punctuation} 
+        \label{fig:puncts}
     \end{figure}
 
     This obviously introduces a new problem as operators like \verb+==+
@@ -63,8 +64,104 @@
       \centering
       \begin{lstlisting}[language=Python]
         cleaned_text = re.sub(r'=  =', '==', cleaned_text)                                                                │                                                                                                        
-        cleaned_text = re.sub(r'\+ =', '\+=', cleaned_text)
-      \end{lstlisting}
+        cleaned_text = re.sub(r'\+ =', '\+=', cleaned_text) \end{lstlisting}
       \caption{Fixing operators that got seperated}
       \label{fig:operators}
     \end{figure}
+
+  \subsection{Turning words into numbers}
+  \label{sub:turning_words_into_numbers}
+  
+    Since neural networks can only deal with numeric values, we have to turn all the words into numbers.
+    This can easily be achieved by assigning sequential numbers to all the words, as seen in (\ref{fig:tonums}).
+    At first, we make sure that there are no words consisting only of whitespace. Then we add a special token
+    that will be used later in all places that we think are variable names, constants or other kinds
+    of identifiers. After that we make all the items so far unique. If this was omitted, the length of the dictionary
+    and the highest index number would no longer correspondend, which would cause a lot of overhead when we
+    create a one hot encoding later. Then we use dictionary comprehension to create the dictionaries.
+
+    It is beneficial for the performance to create dictionaries for both directions of the lookup.
+
+    \begin{figure}[htpb]
+      \centering
+      \begin{lstlisting}
+  cleaned_word_list = [ w.strip() for w in word_list if w.strip() != '' ]
+  cleaned_word_list += ['<ID>']
+  cleaned_word_list = set(cleaned_word_list)
+  word_idx_pairs = list(enumerate(cleaned_word_list))
+
+  w2n_dict = { w: i for i, w in word_idx_pairs}
+  n2w_dict = { i: w for i, w in word_idx_pairs} \end{lstlisting}
+      \caption{Turning words into numerical values}
+      \label{fig:tonums}
+    \end{figure}
+
+    Just like any other language, a programming language follows the rule that there is a small number of words that
+    appear extremely often, while the majority of words appears far less frequently. We use this to
+    find out which words are keywords (like \verb+if+) or just common enough to be considered part of the language
+    (like the string \verb+'__name__'+) and which words are just noise. The tokens can then mentally be split into
+    two categories, those that carry meaning to the language and those that are just identifiers and will all be treated
+    as equal later on.
+  
+    So after splitting the whole collection of source code based on whitespace, we decided that a word needs the appear
+    in at least a certain percentage of all documents to be considered meaningful (\ref{fig:downsamp}).
+
+    \begin{figure}[htpb]
+      \centering
+  \begin{lstlisting}
+from collections import Counter
+all_words = cleaned_text.split(" ")
+c = Counter(all_words)
+
+min_fraction = 0.2
+min_count = num_files * min_fraction
+
+reduced_words = [ w for w in all_words if c[w] >= min_count ] \end{lstlisting}
+      \caption{Cutting off uncommon tokens}
+      \label{fig:downsamp}
+    \end{figure}
+
+    Of course \verb+min_fraction+ is another parameter that can be tuned. We experimented with numbers 
+    from $0.01$ up to and including $0.2$ and received equally good results. We decided to go with $0.2$ because this
+    reduces the dictionary size from $151441$ to $214$ and thereby greatly reducing the amount of RAM needed
+    to store the training data. Plus, if there are too many tokens in the dictionary the network might
+    try to learn to differentiate between objects that actually mean the same.
+
+    Finally, the sequences of words can be turned into sequences of numbers, keeping all the ones that appear in
+    our dictionary natively and replacing everything else with the special token \verb+<ID>+. Translating
+    these numbers back into words than gives us lines like (\ref{fig:goodsample})
+
+    \begin{figure}[htpb]
+      \centering
+      \begin{verbatim}
+    ['<ID>', 'def', '<ID>', '(', '<ID>', ')', ':', '<ID>'] \end{verbatim}
+      \caption{Sample line after translating the words into numbers}
+      \label{fig:goodsample}
+    \end{figure}
+
+    Apart from the \verb+<ID>+ tokens at the beginning and end, this is exactly what we are looking for. A scriptable text editor
+    can use this type of output to make smart suggestions and just ask the programmer to fill out the \verb+<ID>+ placholders.
+
+    \subsection{Creating the training data}
+    \label{sub:creating_the_training_data}
+    
+      Creating samples for training from these sequences is now rather trivial. Given an input length \verb+w+, we need
+      to create input sequences from a starting index \verb+i+ up to \verb|i+w-1| and define the word at position
+      \verb|i+w| as the target value (\ref{fig:tosamples}). Since we replaced the line breaks in our input with
+      \verb+<EOL>+ tags and split the text based on these, we have to reintroduce them to make sure that
+      the network can also learn when to break a line.
+
+      \begin{figure}[htpb]
+        \centering
+        \begin{lstlisting}
+    ls = sentence + [ reduced_w2n_dict['<EOL>'] ]
+    
+    x_vals = [ ls[i:i+window_size] for i in range(len(ls) - window_size) ]
+    y_vals = [ ls[i+window_size] for i in range(len(ls) - window_size) ] \end{lstlisting}
+        \caption{Turning the sequences into input label pairs}
+        \label{fig:tosamples}
+      \end{figure}
+
+      After that, the input data is turned into a numpy-array, while the labels are turned into one hot encoded vectors.
+      This is crucial in classification tasks, as a small deviation around the correct target value could lead to
+      wrong predictions.

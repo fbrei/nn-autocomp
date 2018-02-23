@@ -1,4 +1,37 @@
 \section{Networks used}
 \label{sec:networks_used}
 
+  \subsection{Layout}
+  \label{sub:layout}
 
+    Based on the success of the infamous
+    Word2Vec model, we decided to add an embedding layer as the first part of our network. This has two advantages.
+    First, embedding layers can be trained to group similar words closer together in a given vector space. This
+    helps structuring the data for later layers and makes it easier to group words that have some kind of connection
+    to each other. The second advantage is more technical, as the subsequent recurrent layer needs vectors as input
+    and the embedding layer turns single values into vectors in a very natural way.
+
+    We then decided to go for a single recurrent layer of GRU cells to keep the number of parameters
+    low. This gives us the opportunity to explore the parameter space a little bit to find a good network
+    regarding size and effectiveness.
+
+    The last layer consists of densely connected neurons using a softmax activation function, so we can access
+    the index of the token that the network predicts using an \verb+argmax+ function. The size of this layer
+    is predetermined by the size of our dictionary which means that this layer adds no additional hyperparameters.
+
+  \subsection{Parameters}
+  \label{sub:parameters}
+  
+  \begin{table}[htpb]
+    \centering
+    \label{tab:single}
+    \begin{tabular}{| c | c | c | c | c |}
+      \hline \textbf{Embedding Dimension}  & 16  & 32  & 64 & 128 \\ \hline
+      \textbf{GRU Cells} &  & & & \\
+      16 & \cellcolor[rgb]{0.9,0.6,0}1.04725 & \cellcolor[rgb]{0.8,0.65,0}  1.0305 & \cellcolor[rgb]{0.75,0.7,0}  1.02196 & \cellcolor[rgb]{0.7,0.75,0}  1.01758 \\ \hline
+      32 & \cellcolor[rgb]{0.85,0.65,0} 1.0316 &\cellcolor[rgb]{0.8,0.7,0} 1.02255 &\cellcolor[rgb]{0.65,0.85,0}  1.01265 & \cellcolor[rgb]{0.6,0.9,0} 1.00873 \\ \hline
+      64 &\cellcolor[rgb]{0.75,0.75,0}  1.0206 &\cellcolor[rgb]{0.65,0.8,0}  1.01366 & \cellcolor[rgb]{0.55,0.9,0} 1.00847 & \cellcolor[rgb]{0.5,0.95,0} 1.00286 \\ \hline
+      128 &\cellcolor[rgb]{0.7,0.8,0}  1.01684 &\cellcolor[rgb]{0.6,0.85,0}  1.01002 & \cellcolor[rgb]{0.55,0.95,0} 1.00372 & \cellcolor[rgb]{0.5,1,0} 1 \\ \hline
+    \end{tabular}
+    \caption{Relative training losses for single word prediction}
+  \end{table}
