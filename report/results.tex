@@ -13,14 +13,40 @@
     
     \begin{table}[htpb]
       \centering
-      \label{tab:label}
+      \label{tab:singleres}
       \begin{tabular}{l | l | l | l | l}
         \textbf{Input} & \verb+if+ & \verb+import+ & \verb+def+ & \verb+(+ \\ \hline  
         \textbf{Prediction}  &  \verb+<ID>+ &\verb+<ID>+  & \verb+<ID>+ & \verb+<ID>+ \\
           & \verb+not+ & \verb+sys+ & \verb+__init__+ & \verb+self+ \\
-          & \verb+self+ & \verb+os+ & \verb+__init__+ & \verb+self+ \\
-          & \verb+__name__+ & \verb+time+ & \verb+__init__+ & \verb+self+ \\
-          & \verb+len+ & \verb+random+ & \verb+__init__+ & \verb+self+ \\
+          & \verb+self+ & \verb+os+ & \verb+main+ & \verb+0+ \\
+          & \verb+__name__+ & \verb+time+ & \verb+get+ & \verb+1+ \\
+          & \verb+len+ & \verb+random+ & \verb+close+ & \verb+x+ \\
       \end{tabular}
       \caption{Predictions made by the single input network}
     \end{table}
+
+    These results look very promising as it makes indeed a lot of sense that words like
+    \verb+if+ or \verb+import+ are usually followed directly by an identifier. We can also
+    see that common Python imports like \verb+import sys+ or \verb+import os+ are important
+    enough to the network that it considers them helpful suggestions. This is exactly
+    the kind of behavior that we were looking for.
+
+  \subsection{Dual Input Network}
+  \label{sub:dual_input_network}
+    
+%  ['if', '<ID>'] -> <ID>
+%  ['if', '<ID>'] -> (
+%  ['if', '<ID>'] -> .
+%  ['if', '<ID>'] -> [
+%  ['def', '<ID>'] -> (
+%  ['def', '<ID>'] -> <ID>
+%  ['def', '<ID>'] -> .
+%  ['def', '<ID>'] -> [
+%  ['main', '('] -> <ID>
+%  ['main', '('] -> self
+%  ['main', '('] -> sys
+%  ['main', '('] -> argv
+%  ['(', '<ID>'] -> )
+%  ['(', '<ID>'] -> ,
+%  ['(', '<ID>'] -> <ID>
+%  ['(', '<ID>'] -> ( 
