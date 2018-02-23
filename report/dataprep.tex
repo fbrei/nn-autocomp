@@ -56,4 +56,15 @@
     \end{figure}
 
     This obviously introduces a new problem as operators like \verb+==+
-    or \verb++=* are torn apart.
+    or \verb|+=| are torn apart. This will again be fixed using regular expressions,
+    as seen in (\ref{fig:operators}).
+
+    \begin{figure}[htpb]
+      \centering
+      \begin{lstlisting}[language=Python]
+        cleaned_text = re.sub(r'=  =', '==', cleaned_text)                                                                │                                                                                                        
+        cleaned_text = re.sub(r'\+ =', '\+=', cleaned_text)
+      \end{lstlisting}
+      \caption{Fixing operators that got seperated}
+      \label{fig:operators}
+    \end{figure}
