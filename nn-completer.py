@@ -42,7 +42,7 @@ def main():
 
     tokens = [ [] ]
 
-    for t in sys.argv[-2:]:
+    for t in sys.argv[1:][-2:]:
         token = t if sys.argv[1] in w2n_dict.keys() else "<ID>"
         tokens[0].append(w2n_dict[token])
 
