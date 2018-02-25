@@ -37,8 +37,9 @@
     Another potential source of trouble is the fact that it is
     absolutely common to append something like a dot or comma directly
     to a name without adding whitespace in between. While perfectly
-    clear to humans, a machine does not recognize \verb+a,+ and
-    \verb+a+\textvisiblespace\verb+,+ as the same thing.
+    clear to humans, a machine does not recognize that \verb+a,+ and
+    \verb+a+\textvisiblespace\verb+,+ represent exactly the same, that is
+    the token '\verb+a+' followed by the token '\verb+,+'.
 
     We can easily remedy this by adding said whitespace, again using
     regular expressions.  Example (\ref{fig:puncts}) deals with
@@ -63,7 +64,8 @@
     \begin{figure}[htpb]
       \centering
       \begin{lstlisting}[language=Python]
-        cleaned_text = re.sub(r'=  =', '==', cleaned_text)                                                                │                                                                                                        
+        cleaned_text = re.sub(r'=  =', '==', cleaned_text)
+
         cleaned_text = re.sub(r'\+ =', '\+=', cleaned_text) \end{lstlisting}
       \caption{Fixing operators that got seperated}
       \label{fig:operators}
@@ -77,7 +79,7 @@
     At first, we make sure that there are no words consisting only of whitespace. Then we add a special token
     that will be used later in all places that we think are variable names, constants or other kinds
     of identifiers. After that we make all the items so far unique. If this was omitted, the length of the dictionary
-    and the highest index number would no longer correspondend, which would cause a lot of overhead when we
+    and the highest index number would no longer correspond, which would cause a lot of overhead when we
     create a one hot encoding later. Then we use dictionary comprehension to create the dictionaries.
 
     It is beneficial for the performance to create dictionaries for both directions of the lookup.
@@ -103,7 +105,7 @@
     two categories, those that carry meaning to the language and those that are just identifiers and will all be treated
     as equal later on.
   
-    So after splitting the whole collection of source code based on whitespace, we decided that a word needs the appear
+    So after splitting the whole collection of source code based on whitespace, we decided that a word needs to appear
     in at least a certain percentage of all documents to be considered meaningful (\ref{fig:downsamp}).
 
     \begin{figure}[htpb]
@@ -123,7 +125,7 @@ reduced_words = [ w for w in all_words if c[w] >= min_count ] \end{lstlisting}
 
     Of course \verb+min_fraction+ is another parameter that can be tuned. We experimented with numbers 
     from $0.01$ up to and including $0.2$ and received equally good results. We decided to go with $0.2$ because this
-    reduces the dictionary size from $151441$ to $214$ and thereby greatly reducing the amount of RAM needed
+    reduces the dictionary size from $151441$ to $214$ which is also beneficial for the amount of RAM needed
     to store the training data. Plus, if there are too many tokens in the dictionary the network might
     try to learn to differentiate between objects that actually mean the same.
 
@@ -134,8 +136,8 @@ reduced_words = [ w for w in all_words if c[w] >= min_count ] \end{lstlisting}
     \begin{figure}[htpb]
       \centering
       \begin{verbatim}
-      ['def', '<ID>', '(', '<ID>', ')', ':'] \end{verbatim}
-      \caption{Sample line after translating the words into numbers}
+          ['def', '<ID>', '(', '<ID>', ')', ':'] \end{verbatim}
+      \caption{Sample line after translating the words into numbers and back}
       \label{fig:goodsample}
     \end{figure}
 
@@ -162,6 +164,6 @@ reduced_words = [ w for w in all_words if c[w] >= min_count ] \end{lstlisting}
         \label{fig:tosamples}
       \end{figure}
 
-      After that, the input data is turned into a numpy-array, while the labels are turned into one hot encoded vectors.
+      After that, the input data is turned into a numpy array, while the labels are turned into one hot encoded vectors.
       This is crucial in classification tasks, as a small deviation around the correct target value could lead to
       wrong predictions.

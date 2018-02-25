@@ -43,7 +43,7 @@
     epoch so we aborted training at that point.
 
     Again we ran some common combinations of words through the network and recorded the top
-    five outputs as recorded below.
+    five outputs as seen below.
 
     \begin{table}[htpb]
       \centering
@@ -74,5 +74,5 @@
           [.{$<$EOL$>$} ]]
 
     As one can see, the suggestions already make some sense (except for the immediate \verb+<EOL>+). Unfortunately,
-    once the network starts suggestions multiple comma separated identifiers, it is trapped in an endless loop due
+    once the network starts suggesting multiple comma separated identifiers, it is trapped in an endless loop due
     to the small lookbehind window.

@@ -67,8 +67,8 @@ model.fit(x = training_inputs, y = training_labels, epochs = epochs, batch_size 
     is best practice in these types of machine learning.
 
     As expected, a higher number in both dimension leads to a reduced validation loss. The best results
-    were achieved with relatively high numbers in both dimensions and we had hoped for the loss to
-    reach a minimum with lower numbers.
+    were achieved with maxed out embedding dimension and number of GRU cells and we had hoped for the loss to
+    reach a minimum far earlier, as this would have allowed us to use a smaller network to safe some space.
 
     Eventually we settled with $(128,128)$ as our parameter pair and trained both networks with this combination as
     can be seen in (\ref{fig:kerasnet}).

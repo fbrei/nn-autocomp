@@ -10,8 +10,8 @@
   \subsection{Neural networks}
   \label{sub:neural_networks}
   
-    A \textit{Neuron} is a programmatic structure (or function) that is based
-    on neurons inside the brain. In its most basic form, it takes a vector of
+    A \textit{neuron} is a programmatic structure (or function) that tries to resemble
+    neurons inside the brain. In its most basic form, it takes a vector of
     input variables, calculates a weighted sum and applies an activation function
     (typically a sigmoid function like \textit{tanh}).
 
@@ -25,8 +25,9 @@
   
     A \textit{recurrent neural network} is a neural network where the
     output of one or more layers is fed back as input to the network
-    or a selection of units. This allows the network to make decisions
-    based on previous results / events.
+    or a selection of neurons typically scaled by a factor between 0
+    and 1. This allows the network to make decisions based on previous
+    results / events.
 
   \subsection{LSTM and GRU}
   \label{sub:lstm_and_gru}
@@ -34,7 +35,7 @@
     The problem with basic RNNs is that they cannot store information for a long time.
     If a recurrent neural network tries to keep a piece of information over a longer
     period of time, it would have to constantly feed it back as input but this would
-    suffer from an exponential decay and is therefore not suited for language processing
+    suffer from an exponential decay. Therefore they are not suited for language processing
     where we may need to refer to information that was mentioned a long time ago \cite{hrdipl}, \cite{bengio}.
 
     Fortunately, Hochreiter and Schmidhuber came up with a solution called
@@ -46,7 +47,7 @@
     pieces of information and use it later on, without the danger of
     losing it due to decay.  See (\ref{fig:lstm}) for a schematic of the
     internal structure. In short, LSTMs possess so called \textit{gates}
-    that determine if and what information is stored. The \textit{forget
+    that determine if and what information should be stored. The \textit{forget
     gate} (marked by an '\verb+x+' on the upper line) decides whether or not
     to drop the current memory state and the \textit{input gate} (marked
     by a '\verb|+|') decides which values to add to the current state.
@@ -62,7 +63,6 @@
 	GRUs (Gated Recurrent Units) are a slight simplification of LSTMs \cite{gru}. They
 	combine the forget and input gate into a single update gate to reduce the computational workload
 	a little bit, but are otherwise essentially the same.
-    
 
   \subsection{Embeddings}
   \label{sub:embeddings}
