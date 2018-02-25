@@ -8,9 +8,11 @@
     We proved that a seamingly simple architecture yields incredible results; the network was made up
     of only three layers featuring types of cells that are very common in language and text processing.
 
-    What remains to do is turning the experimental code that we used into an actual program that
-    loads a pretrained model and produces a set of predictions; either limited by a specified
-    amount or length. The models we generated can be found in our Github repositories.
+    So far we managed to create a simple command line tool that accepts one or more tokens and produces
+    suggestions based on these; you can find the code in our \href{https://github.com/fbrei/nn-autocomp}{Github repository}.
+    One serious issue right now is performance, because importing Keras is a very time consuming
+    step. This should and will be solved by daemonizing the engine and making use of sockets to
+    send the tokens and receive suggestions.
 
     Another aspect that should be paid attention to is finding a way to avoid the infinite loop
     that can be caused by reiterating input pairs like '\verb|<ID> ,|' as seen above. This is
