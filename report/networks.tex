@@ -19,6 +19,26 @@
     the index of the token that the network predicts using an \verb+argmax+ function. The size of this layer
     is predetermined by the size of our dictionary which means that this layer adds no additional hyperparameters.
 
+    \begin{figure}
+    \begin{center}
+    \begin{lstlisting}
+mem_size = 128
+embedding_dim = 128
+
+model = Sequential()
+
+model.add( Embedding(vocab_size, embedding_dim, input_length=window_size) )
+model.add( GRU(mem_size, activation='tanh') )
+model.add( Dense(vocab_size, activation='softmax') )
+
+model.compile(optimizer=Adam(learning_rate), loss='categorical_crossentropy')
+
+model.fit(x = training_inputs, y = training_labels, epochs = epochs, batch_size = batch_size, verbose = 1, validation_split = validation_split) \end{lstlisting}
+    \end{center}
+    \caption{Using Keras to create the neural network with the best parameters}
+    \label{fig:kerasnet}
+    \end{figure}
+
   \subsection{Parameters}
   \label{sub:parameters}
 
@@ -50,7 +70,8 @@
     were achieved with relatively high numbers in both dimensions and we had hoped for the loss to
     reach a minimum with lower numbers.
 
-    Eventually we settled with $(128,128)$ as our parameter pair and trained both networks with this combination.
+    Eventually we settled with $(128,128)$ as our parameter pair and trained both networks with this combination as
+    can be seen in (\ref{fig:kerasnet}).
   
   \begin{table}[htpb]
     \centering
@@ -65,4 +86,8 @@
 
     \end{tabular}
     \caption{Relative training losses for predictions based on two input values}
+
   \end{table}
+
+    
+

@@ -1,0 +1,21 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Previous research}{}% 2
+\BOOKMARK [1][-]{section.3}{Prerequisites}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Neural networks}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Recurrent Neural Networks}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{LSTM and GRU}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Embeddings}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.5}{Keras}{section.3}% 8
+\BOOKMARK [1][-]{section.4}{Data preparation}{}% 9
+\BOOKMARK [2][-]{subsection.4.1}{Dealing with comments}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.2}{Punctuation and Operators}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.3}{Turning words into numbers}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.4}{Creating the training data}{section.4}% 13
+\BOOKMARK [1][-]{section.5}{Networks used}{}% 14
+\BOOKMARK [2][-]{subsection.5.1}{Layout}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.2}{Parameters}{section.5}% 16
+\BOOKMARK [1][-]{section.6}{Results}{}% 17
+\BOOKMARK [2][-]{subsection.6.1}{Single Input Network}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.2}{Dual Input Network}{section.6}% 19
+\BOOKMARK [2][-]{subsection.6.3}{Consecutive Output}{section.6}% 20
+\BOOKMARK [1][-]{section.7}{Outlook}{}% 21

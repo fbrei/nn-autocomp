@@ -1,4 +1,35 @@
 \section{Outlook}
 \label{sec:outlook}
 
+    We have shown that it is indeed possible to train a neural network to make meaningful predictions
+    even in the realm of programming languages. Given the success that RNNs have shown in the field
+    of text generation, it was only logical to assume that they would prevail in this area too.
 
+    We proved that a seamingly simple architecture yields incredible results; the network was made up
+    of only three layers featuring types of cells that are very common in language and text processing.
+
+    What remains to do is turning the experimental code that we used into an actual program that
+    loads a pretrained model and produces a set of predictions; either limited by a specified
+    amount or length. The models we generated can be found in our Github repositories.
+
+    Another aspect that should be paid attention to is finding a way to avoid the infinite loop
+    that can be caused by reiterating input pairs like '\verb|<ID> ,|' as seen above. This is
+    due to the limited window size that the network is allowed to look at and should be improved.
+    Increasing said window size is obviously not a solution as this only pushes the problem a little
+    bit further away but does not avoid it. On the other hand, this may even be a wanted side effect
+    as this enables the network to generate for example function definitions with an arbitrary amount
+    of identifiers, but even then one would have to find a way to handle this.
+
+    The last aspect that we can think of is improving the preprocessing chain. So far we have used
+    a series of very generic steps that apply to all major programming languages but it may be
+    possible to improve our results by adding preprocessing modules that are specific to the
+    programming language at hand. For example, instead of replacing all occurences of variable names
+    by the same \verb+<ID>+ tag, one could add information about the object's class to the tag so
+    the network does not only learn which methods are commonly called on an arbitrary object, but also
+    which methods are even possible on certain types of objects. \\
+
+    To sum it all up, we have shown that machine learning can be used to create a kind of
+    \textit{virtual mentor} that learns to make suggestions by looking at vast amounts of code.
+    This kind of mentor can be used to aid aspiring programmers like digital humanists to become
+    better in a less amount of time by reminding them in common situations what others (more experienced programmers)
+    have done in the past.

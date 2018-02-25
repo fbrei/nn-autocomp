@@ -1,0 +1,17 @@
+\section{Previous research}
+
+    By the time of this writing there is only a very small number of related projects known to the public.
+
+    The paper by Das and Shah \cite{cococo} for example uses RNNs to analyze two major software projects;
+    the Linux Kernel written in C and a Python networking library named Twisted. Their work is relatively
+    similar but it differs in that their goal is to predict the exact same words and word sequences
+    while we want to learn about the internal structure of source code and the placing of keywords
+    and variable names. For example, we will assume later that every token that appears less than
+    a certain amount of times must be some kind of identifier and replace all of them by the same
+    tag. This is a step that was not done in \cite{cococo}.
+
+    Another example was made by Robin Sloan \cite{writing} who used RNNs to complete sentences
+    based on previous inputs. He used old science fiction literature as training data
+    and even created a plugin for a text editor of his choice. Our project shares the same
+    principal idea but again he aims at predicting complete sentences while we want to
+    use placeholders at appropriate places.
